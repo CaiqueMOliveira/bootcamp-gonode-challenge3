@@ -2,7 +2,24 @@ const Ad = require('../models/Ad')
 
 class AdController {
   async index (req, res) {
-    const foundAds = await Ad.find()
+    const { price_min, price_max, title } = req.query
+    const filterToBeAppliedOnPagination = {}
+
+    if (price_max || price_min) {
+      filterToBeAppliedOnPagination.price = {}
+
+      if (price_max) filterToBeAppliedOnPagination.price.$lte = price_max
+      if (price_min) filterToBeAppliedOnPagination.price.$gte = price_min
+    }
+
+    if (title) filterToBeAppliedOnPagination.title = new RegExp(title, 'i')
+
+    const foundAds = await Ad.paginate(filterToBeAppliedOnPagination, {
+      page: req.query.page || 1,
+      limit: 20,
+      populate: ['author'],
+      sort: '-createdAt'
+    })
     return res.json(foundAds)
   }
 

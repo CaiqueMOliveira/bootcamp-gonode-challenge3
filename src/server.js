@@ -1,6 +1,8 @@
 const express = require('express')
 const { ValidationError } = require('express-validation')
 const mongoose = require('mongoose')
+require('dotenv').config()
+
 const Youch = require('youch')
 const Sentry = require('@sentry/node')
 const databaseConfig = require('./config/database.js')

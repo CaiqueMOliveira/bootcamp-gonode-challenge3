@@ -7,12 +7,18 @@ class PurchaseController {
     const { adId, messageToSeller } = req.body
 
     const foundAd = await Ad.findById(adId).populate('author')
+    const client = await User.findById(req.userId)
 
     await Mail.sendMail({
       from: '"Caique Oliveira" <caique.m.oliveira.br@gmail.com>',
       to: foundAd.author.email,
       subject: `New order: ${foundAd.title}`,
-      html: `Testing: ${messageToSeller}`
+      template: 'purchase',
+      context: {
+        client: { ...client._doc, message: messageToSeller },
+        seller: foundAd.author,
+        ad: foundAd
+      }
     })
 
     return res.send()

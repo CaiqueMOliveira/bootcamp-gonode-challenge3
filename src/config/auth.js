@@ -1,4 +1,4 @@
 module.exports = {
-  ttl: process.env.APP_TOKEN_TTL,
+  ttl: 86400,
   secret: process.env.APP_SECRET
 }

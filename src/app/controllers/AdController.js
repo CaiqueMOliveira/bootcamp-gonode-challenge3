@@ -3,7 +3,9 @@ const Ad = require('../models/Ad')
 class AdController {
   async index (req, res) {
     const { price_min, price_max, title } = req.query
-    const filterToBeAppliedOnPagination = {}
+    const filterToBeAppliedOnPagination = {
+      purchasedBy: undefined
+    }
 
     if (price_max || price_min) {
       filterToBeAppliedOnPagination.price = {}

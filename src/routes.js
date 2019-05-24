@@ -8,9 +8,10 @@ const {
   UserController,
   SessionController,
   AdController,
-  PurchaseController
+  PurchaseController,
+  OrderController
 } = require('./app/controllers')
-const { User, Ad, Purchase, Session } = require('./app/validators')
+const { User, Ad, Purchase, Session, Order } = require('./app/validators')
 
 routes.post('/users', validate(User), handle(UserController.store))
 routes.post('/sessions', validate(Session), handle(SessionController.store))
@@ -26,5 +27,13 @@ routes.post('/ads', validate(Ad), handle(AdController.store))
 
 // *************** Purchase ******************
 routes.post('/purchase', validate(Purchase), handle(PurchaseController.store))
+
+// *************** Orders ******************
+routes.get('/order', OrderController.index)
+routes.put(
+  '/order/:purchaseId',
+  validate(Order),
+  OrderController.setOrderAsPerformed
+)
 
 module.exports = routes
